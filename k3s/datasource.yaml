@@ -1,0 +1,92 @@
+# kubectl apply -k .
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: datasource
+  template:
+    metadata:
+      labels:
+        component: datasource
+    spec:
+      containers:
+      # Data source backend serving metrics accessed by Grafana:
+      - name: datasource
+        image: f0bec0d/datasource-clj
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+
+      # Grafana frontend for demo & devel:
+      - name: grafana
+        image: grafana/grafana:6.4.3
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+        - mountPath: "/var/lib/grafana"
+          name: "var-lib-grafana"
+        # SimpleJson  Plugin  ist  not  installed  by  default.   This
+        # environment setting  will trigger a download  from Internets
+        # on container  start. Consider setting https_proxy  if plugin
+        # fails to download:
+        env:
+        - name: "GF_INSTALL_PLUGINS"
+          value: "grafana-simple-json-datasource"
+
+      # The Volume must be writable by Grafana user. Without this init
+      # container you would have to manually do this:
+      #
+      #   mkdir -p /var/lib/k3s-volumes/var-lib-grafana/
+      #   chown 472:472 /var/lib/k3s-volumes/var-lib-grafana/
+      #   chmod 700 /var/lib/k3s-volumes/var-lib-grafana/
+      #
+      # FIXME: what if the UID or GID change?
+      initContainers:
+      - name: "chown-n-chmod"
+        image: "busybox:1.31"
+        command: ["sh", "-c", "chown 472:472 /d && chmod 700 /d"]
+        volumeMounts:
+        - mountPath: "/d"
+          name: "var-lib-grafana"
+      volumes:
+      - name: "var-lib-grafana"
+        hostPath:
+          path: "/var/lib/k3s-volumes/var-lib-grafana"
+          type: "DirectoryOrCreate"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+spec:
+  type: ClusterIP
+  selector:
+    component: datasource
+  ports:
+  - port: 3000
+    targetPort: 3000
+---
+#
+# We assume here that *.localhost resolves to the local machine.  Following
+# URLs should be directed to Grafana.
+#
+#     http://grafana.localhost
+#     https://grafana.localhost
+#
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+  - host: grafana.localhost
+    http:
+      paths:
+      - backend:
+          serviceName: grafana
+          servicePort: 3000

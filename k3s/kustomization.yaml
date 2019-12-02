@@ -1,0 +1,10 @@
+# kubectl apply -k .
+namespace: datasource-clj
+namePrefix: "datasource-"
+nameSuffix: ""
+commonLabels:
+  app: "datasource"
+commonAnnotations:
+  change-this-to-reapply: "1"
+resources:
+  - datasource.yaml
