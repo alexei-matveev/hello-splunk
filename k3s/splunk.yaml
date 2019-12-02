@@ -61,5 +61,5 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: grafana
+          serviceName: splunk
           servicePort: 8000
