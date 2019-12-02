@@ -1,0 +1,58 @@
+# kubectl apply -k .
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: splunk
+  template:
+    metadata:
+      labels:
+        component: splunk
+    spec:
+      containers:
+      # https://hub.docker.com/r/splunk/splunk/tags
+      - name: splunk
+        image: splunk/splunk:7.3.3
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        env:
+        - name: "SPLUNK_START_ARGS"
+          value: "--accept-license"
+        - name: "SPLUNK_PASSWORD"
+          value: "abc123"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: splunk
+spec:
+  type: ClusterIP
+  selector:
+    component: splunk
+  ports:
+  - port: 8000
+    targetPort: 8000
+---
+#
+# We assume here that all of *.localhost resolve to the local machine:
+#
+#     http://splunk.localhost
+#     https://splunk.localhost
+#
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+  - host: splunk.localhost
+    http:
+      paths:
+      - backend:
+          serviceName: grafana
+          servicePort: 8000

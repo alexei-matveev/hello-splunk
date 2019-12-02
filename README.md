@@ -1,28 +1,7 @@
-# Grafana SimpleJson Datasource Backend in Clojure
+# Explore Splunk in Kubernetes
 
-A Clojure Implementation of the Data Source Backend for
-[SimpleJson](https://grafana.com/grafana/plugins/grafana-simple-json-datasource)
-Grafana Plugin.
-
-## Usage
-
-Start Grafana
-
-    docker run -d -p 3000:3000 --name=grafana \
-        -e "GF_INSTALL_PLUGINS=grafana-simple-json-datasource" grafana/grafana
-
-and  configure   a  SimpleJson  Datasource  pointing   to  your  host,
-e.g. http://192.168.0.1:8080.   Beware that localhost inside  a Docker
-container does not point to the Docker Host. You may need to configure
-Proxy  in the  Container environment  if  you are  behind a  corporate
-Firewall, e.g.:
-
-    docker run ... -e "https_proxy=..." ...
-
-## Kubernetes
-
-    kubectl create namespace datasource-clj
-    kubectl config set-context --current --namespace=datasource-clj
+    kubectl create namespace hello-splunk
+    kubectl config set-context --current --namespace=hello-splunk
     kubectl apply -k ./k3s
 
 ## License
