@@ -14,7 +14,12 @@ spec:
         component: splunk
     spec:
       containers:
+      #
+      # Splunk from Docker Hub,
       # https://hub.docker.com/r/splunk/splunk/tags
+      #
+      # FWIW, the Splunk container runs Ansible on start!
+      #
       - name: splunk
         image: splunk/splunk:7.3.3
         imagePullPolicy: IfNotPresent
@@ -23,8 +28,10 @@ spec:
         env:
         - name: "SPLUNK_START_ARGS"
           value: "--accept-license"
+        # Password complexity requirements: Password must contain at
+        # least: * 8 total printable ASCII character(s).
         - name: "SPLUNK_PASSWORD"
-          value: "abc123"
+          value: "abc12345"
 ---
 apiVersion: v1
 kind: Service
