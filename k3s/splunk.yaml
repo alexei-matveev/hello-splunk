@@ -21,15 +21,25 @@ spec:
       # FWIW, the Splunk container runs Ansible on start!
       #
       - name: splunk
+        # Appears to be based on "Debian GNU/Linux 10 (buster)":
         image: splunk/splunk:7.3.3
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
         env:
+        #
+        # Splunk Free  provides no  authorization ---  allows password
+        # free login  to everyone  on the network  [1]. You  have been
+        # warned!
+        #
+        # [1] https://splunk.github.io/docker-splunk/advanced/LICENSE_INSTALL.html#splunk-free-license
+        #
+        # - name: "SPLUNK_LICENSE_URI"
+        #   value: "Free"
         - name: "SPLUNK_START_ARGS"
           value: "--accept-license"
-        # Password complexity requirements: Password must contain at
-        # least: * 8 total printable ASCII character(s).
+        # Only for  Trial license.  Password  must contain at  least 8
+        # total printable ASCII characters.
         - name: "SPLUNK_PASSWORD"
           value: "abc12345"
 ---
