@@ -1,11 +1,33 @@
 # Explore Splunk in Kubernetes
 
+FIXME: the container ist started with --accept-license arg. What are
+the actual
+[terms](https://www.splunk.com/en_us/legal/splunk-software-license-agreement.html)?
+See
+[here](https://splunk.github.io/docker-splunk/advanced/LICENSE_INSTALL.html)
+for more. The
+[Section](https://splunk.github.io/docker-splunk/advanced/LICENSE_INSTALL.html#splunk-free-license)
+seems to suggest the default ist 30-Day Trial.  There appears to be a
+Splunk
+[Free](https://docs.splunk.com/Documentation/Splunk/7.3.3/Admin/MoreaboutSplunkFree)
+offering with limited functionality.
+
     kubectl create namespace hello-splunk
     kubectl config set-context --current --namespace=hello-splunk
     kubectl apply -k ./k3s
 
 Then  Navigate to  [URL](http://splunk.localhost)  and  login as  User
 "admin" with the password supplied in the Config.
+
+See Docker [Hub](https://hub.docker.com/r/splunk/splunk) and
+[docker-splunk](https://github.com/splunk/docker-splunk) on GitHub.
+There are some strings attached to the
+[support](https://splunk.github.io/docker-splunk/SUPPORT.html)
+contract.
+
+See Container Usage:
+
+    kubectl exec ... /sbin/entrypoint.sh help
 
 ## License
 
