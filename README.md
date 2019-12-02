@@ -4,6 +4,9 @@
     kubectl config set-context --current --namespace=hello-splunk
     kubectl apply -k ./k3s
 
+Then  Navigate to  [URL](http://splunk.localhost)  and  login as  User
+"admin" with the password supplied in the Config.
+
 ## License
 
 Copyright © 2019 Alexei Matveev <alexei.matveev@gmail.com>
