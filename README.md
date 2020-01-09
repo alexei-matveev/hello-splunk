@@ -1,7 +1,7 @@
 # Explore Splunk in Kubernetes
 
-FIXME: the container ist started with --accept-license arg. What are
-the actual
+NOTE: the container is started with --accept-license arg. What are the
+actual
 [terms](https://www.splunk.com/en_us/legal/splunk-software-license-agreement.html)?
 See
 [here](https://splunk.github.io/docker-splunk/advanced/LICENSE_INSTALL.html)
