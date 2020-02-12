@@ -22,7 +22,7 @@ spec:
       #
       - name: splunk
         # Appears to be based on "Debian GNU/Linux 10 (buster)":
-        image: splunk/splunk:7.3.3
+        image: splunk/splunk:8.0.1 # FIXME: where is 8.0.2?
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000

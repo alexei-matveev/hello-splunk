@@ -9,7 +9,7 @@ for more. The
 [Section](https://splunk.github.io/docker-splunk/advanced/LICENSE_INSTALL.html#splunk-free-license)
 seems to suggest the default ist 30-Day Trial.  There appears to be a
 Splunk
-[Free](https://docs.splunk.com/Documentation/Splunk/7.3.3/Admin/MoreaboutSplunkFree)
+[Free](https://docs.splunk.com/Documentation/Splunk/8.0.2/Admin/MoreaboutSplunkFree)
 offering with limited functionality.
 
     kubectl create namespace hello-splunk
